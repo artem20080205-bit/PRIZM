@@ -1,0 +1,18 @@
+# Only reviewed application sources belong in this repository.
+/*
+!/.gitignore
+!/README.md
+!/requirements.txt
+!/client.py
+!/server.py
+!/network.py
+!/internet.py
+!/processes.py
+!/state.py
+!/settings_ui.py
+!/start.pyw
+!/update.py
+!/update.cmd
+!/tests/
+/tests/*
+!/tests/*.py
