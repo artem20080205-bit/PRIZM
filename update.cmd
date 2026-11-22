@@ -1,15 +1,27 @@
 @echo off
 setlocal
-chcp 65001 >nul
-set PYTHONUTF8=1
 cd /d "%~dp0"
-py -3.13 -c "import sys" >nul 2>&1
-if errorlevel 1 goto python312
-py -3.13 update.py
-goto finished
-:python312
-py -3.12 update.py
-:finished
-set result=%errorlevel%
-if not "%result%"=="0" pause
-exit /b %result%
+node -e "process.exit(Number(process.versions.node.split('.')[0]) < 24 ? 1 : 0)" >nul 2>&1
+if errorlevel 1 goto need_node
+git rev-parse --is-inside-work-tree >nul 2>&1
+if errorlevel 1 goto need_git
+git diff --quiet HEAD --
+if errorlevel 1 goto local_changes
+git pull --ff-only
+if errorlevel 1 goto failed
+call npm ci
+if errorlevel 1 goto failed
+echo Update complete. Launch start.cmd.
+exit /b 0
+
+:need_node
+echo Install Node.js 24 or later: https://nodejs.org/
+goto failed
+:need_git
+echo Install Git and run this script from a git clone of PRIZM.
+goto failed
+:local_changes
+echo Save your local code changes before updating.
+:failed
+pause
+exit /b 1
