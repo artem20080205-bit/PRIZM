@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRISM</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="brand">PRISM</div>
+    <div id="connection" role="status">Отключено</div>
+    <button id="settings">Настройки</button>
+  </header>
+  <main>
+    <section id="welcome">
+      <h1>Подключитесь к чату</h1>
+      <div class="actions">
+        <button class="primary" id="host-open">Создать сервер</button>
+        <button id="join-open">Подключиться</button>
+      </div>
+    </section>
+    <section id="chat" hidden>
+      <aside>
+        <div class="sidebar-heading">
+          <h2>Чаты</h2>
+          <button id="new-chat" title="Создать чат" aria-label="Создать чат">+</button>
+        </div>
+        <nav id="chats" aria-label="Чаты"></nav>
+        <div class="server-actions">
+          <button id="internet">Включить интернет</button>
+          <button id="invite">Приглашение другу</button>
+          <button id="leave">Отключиться</button>
+        </div>
+      </aside>
+      <section class="thread">
+        <h2 id="chat-title">Общий чат</h2>
+        <ol id="messages" aria-label="Сообщения"></ol>
+        <form id="composer">
+          <input id="text" aria-label="Сообщение" placeholder="Сообщение…" maxlength="16000" required>
+          <button id="file" type="button">Файл</button>
+          <button id="send" class="primary">Отправить</button>
+        </form>
+      </section>
+    </section>
+    <footer>
+      <span id="progress" role="status"></span>
+      <button id="cancel-transfer" hidden>Отменить передачу</button>
+    </footer>
+  </main>
+
+  <dialog id="host-dialog">
+    <form id="host-form">
+      <h2>Создать сервер</h2>
+      <label for="host-folder">Папка данных</label>
+      <div class="row"><input id="host-folder" required><button id="host-browse" type="button">Выбрать…</button></div>
+      <label for="host-port">Порт</label>
+      <input id="host-port" type="number" min="1024" max="65535" value="8765" required>
+      <p>Для друга из другой сети включите интернет и отправьте приглашение. Сервер доступен, пока PRISM запущен.</p>
+      <p class="muted">В интернет-режиме данные проходят через Cloudflare. Сквозного шифрования пока нет.</p>
+      <div class="actions"><button type="button" data-close="host-dialog">Отмена</button><button class="primary">Запустить</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="join-dialog">
+    <form id="join-form">
+      <h2>Подключиться</h2>
+      <label for="code">Приглашение</label>
+      <input id="code" type="password" maxlength="4096" autocomplete="off" required>
+      <div class="actions"><button type="button" data-close="join-dialog">Отмена</button><button class="primary">Подключиться</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="new-dialog">
+    <form id="new-form">
+      <h2>Создать чат</h2>
+      <label for="title">Название</label>
+      <input id="title" maxlength="80" required>
+      <div class="actions"><button type="button" data-close="new-dialog">Отмена</button><button class="primary">Создать</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="settings-dialog">
+    <h2>Хранилище</h2>
+    <label for="settings-folder">Папка данных для следующего запуска сервера</label>
+    <div class="row">
+      <input id="settings-folder">
+      <button id="settings-browse">Выбрать…</button>
+      <button id="save-folder">Сохранить</button>
+    </div>
+    <p id="current-folder"></p>
+    <button id="open-folder" hidden>Открыть папку сервера</button>
+    <div id="storage"></div>
+    <div class="actions"><button data-close="settings-dialog">Закрыть</button></div>
+  </dialog>
+</body>
+</html>
